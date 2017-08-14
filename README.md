@@ -2,6 +2,17 @@
 Self-Driving Car Engineer Nanodegree Program
 
 ---
+## Addition of Gradient Descent Class
+The working PID controller has been given a gradient descent class called Twiddle.  It optimizes the PID parameters as the car drives autonomously round the simulator track.
+
+The Twiddle class is based on an algorithm from the CarND PID class that implements Gradient Descent.
+
+Twiddle is currently switched off (its change parameters are currently set to zero). It optimized the PID controller to:
+* Kp = 0.18
+* Ki = 0.004
+* Kd = 3.0
+
+When setting the algorithm the Twiddle change parameters should be set to 10% of the initial PID parameters. This stops the car from crashing.
 
 ## Dependencies
 
@@ -19,7 +30,7 @@ Self-Driving Car Engineer Nanodegree Program
   * Run either `./install-mac.sh` or `./install-ubuntu.sh`.
   * If you install from source, checkout to commit `e94b6e1`, i.e.
     ```
-    git clone https://github.com/uWebSockets/uWebSockets 
+    git clone https://github.com/uWebSockets/uWebSockets
     cd uWebSockets
     git checkout e94b6e1
     ```
@@ -33,7 +44,7 @@ There's an experimental patch for windows in this [PR](https://github.com/udacit
 1. Clone this repo.
 2. Make a build directory: `mkdir build && cd build`
 3. Compile: `cmake .. && make`
-4. Run it: `./pid`. 
+4. Run it: `./pid`.
 
 ## Editor Settings
 
