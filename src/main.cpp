@@ -4,6 +4,7 @@
 #include "PID.h"
 #include <math.h>
 
+
 // for convenience
 using json = nlohmann::json;
 
@@ -31,14 +32,22 @@ std::string hasData(std::string s) {
 int main()
 {
   uWS::Hub h;
-  double kp = 0.2;
+  int n = 10;
+  double kp = 0.18;
   double ki = 0.004;
   double kd = 3.0;
+  double tolerance = 0.001;
+  double kp_d = 0.00;
+  double ki_d = 0.0000;
+  double kd_d = 0.0;
   PID pid;
+  Twiddle steer_twiddle;
   // TODO: Initialize the pid variable.
   pid.Init(kp, ki, kd);
+  steer_twiddle.Init(n, kp_d, ki_d, kd_d, tolerance);
 
-  h.onMessage([&pid](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode) {
+
+  h.onMessage([&pid, &steer_twiddle](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode) {
     // "42" at the start of the message means there's a websocket message event.
     // The 4 signifies a websocket message
     // The 2 signifies a websocket event
@@ -64,6 +73,10 @@ int main()
           pid.UpdateError(cte);
           steer_value = pid.TotalError();
 
+          double test = steer_twiddle.Threshold_test();
+          if (test > steer_twiddle.threshold) steer_twiddle.UpdateTwiddle(cte, pid.params);
+
+          cout << "\nkp = " << pid.params[0] << " ki = " <<  pid.params[1] << " kd = " <<  pid.params[2] << " Threshold = " << test << endl;
           // DEBUG
           std::cout << "CTE: " << cte << "Angle " << angle << " Steering Value: " << steer_value << std::endl;
 
